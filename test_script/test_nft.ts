@@ -42,15 +42,15 @@ const create_login_info = async(signer: any) => {
 
 const mint = async (signer:any) =>{
     const user_login = login1;
-    const session_id: number = 100;
+    const session_id = "100";
     const session_description = "test session";
     const session_type = "link";
     const session_image_url = "www.google.com";
     const session_starter_address = testAddress1;
     const session_participant_addresses = [testAddress1, testAddress2, testAddress3];
-    const session_location_latitude = 200;
-    const session_location_longitude = 300;
-    const session_timestamp = 400;
+    const session_location_latitude = "200";
+    const session_location_longitude = "300";
+    const session_timestamp = "400";
 
     const moveCallTxn = await signer.executeMoveCall({
         packageObjectId,
