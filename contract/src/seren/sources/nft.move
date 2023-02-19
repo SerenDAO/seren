@@ -72,7 +72,7 @@ module seren::nft {
         assert!(vector::contains(event_link::borrow_participants(event), &sender), ECAN_ONLY_MINT_TO_PARTICIPANTS);
 
         let id = object::new(ctx);
-        let event_address = object::uid_to_address(&id);
+        let event_address = event_link::get_event_address(event);
 
         let nft = NFT {
             id,
