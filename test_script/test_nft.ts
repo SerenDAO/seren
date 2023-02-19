@@ -16,51 +16,58 @@ const key_pair_struct2:ExportedKeypair = {
 }
 const keypair1 = fromExportedKeypair(key_pair_struct1)
 const keypair2 = fromExportedKeypair(key_pair_struct2)
+
+const signer1 = new RawSigner(keypair1, provider);
+const signer2 = new RawSigner(keypair2, provider);
+
 const testAddress1 = '0xb9c39335bacc416fa067aacc1c775435c7d53179';
 const testAddress2 = '0x0895e19842c2a081b161f685aa2f3b816ceb50ed';
 const testAddress3 = '0xa9bb5225de506ba7b77f396f481d626a6cdbed9c';
-const testAddress4 = '0x4';
-const testEvent1 = "0x4254c2f5486424aaafbaec3a67b359be9bdc40f2";
 
-const start_event_link = async (signer:any) =>{
-    const description = "test event link name";
-    const event_type = "event link";
-    const event_image_uri = "https://www.google.com";
-    const event_starter = testAddress1;
-    const participants = [testAddress2, testAddress3];
-    const location_latitude = 100;
-    const location_longitude = 200;
-    const timestamp = 100;
-    
+const login1 = "0xde152af5c7275d3e76715fe34e5e3402fdd146b0";
+
+const create_login_info = async(signer: any) => {
     const moveCallTxn = await signer.executeMoveCall({
         packageObjectId,
-        module: 'nft',
-        function: 'start_event_link',
+        module: 'login_info',
+        function: 'create_login_info',
         typeArguments: [],
         arguments: [
-            description,
-            event_type,
-            event_image_uri,
-            event_starter,
-            participants,
-            location_latitude,
-            location_longitude,
-            timestamp,
+            "www.google.com"
         ],
         gasBudget: 10000,
     });
     console.log(moveCallTxn);
 }
 
-const mint_participant_nft_link = async (signer:any) =>{
-    
+const mint = async (signer:any) =>{
+    const user_login = login1;
+    const session_id: number = 100;
+    const session_description = "test session";
+    const session_type = "link";
+    const session_image_url = "www.google.com";
+    const session_starter_address = testAddress1;
+    const session_participant_addresses = [testAddress1, testAddress2, testAddress3];
+    const session_location_latitude = 200;
+    const session_location_longitude = 300;
+    const session_timestamp = 400;
+
     const moveCallTxn = await signer.executeMoveCall({
         packageObjectId,
-        module: 'nft',
-        function: 'mint_participant_nft_link',
+        module: 'nft_link',
+        function: 'mint',
         typeArguments: [],
         arguments: [
-            testEvent1
+            user_login,
+            session_id,
+            session_description,
+            session_type,
+            session_image_url,
+            session_starter_address,
+            session_participant_addresses,
+            session_location_latitude,
+            session_location_longitude,
+            session_timestamp,
         ],
         gasBudget: 10000,
     });
@@ -68,9 +75,7 @@ const mint_participant_nft_link = async (signer:any) =>{
 }
 
 const main = async() =>{
-    const signer1 = new RawSigner(keypair1, provider);
-    const signer2 = new RawSigner(keypair2, provider);
-    // await start_event_link(signer1);
-    await mint_participant_nft_link(signer2);
+    // await create_login_info(signer1);
+    await mint(signer1);
 }
-main()
+main();

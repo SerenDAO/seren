@@ -2,7 +2,6 @@ module seren::main {
     use sui::object::{Self, UID};
     use sui::transfer;
     use sui::tx_context::{Self, TxContext};
-    use std::vector;
 
     // can't be transferred once initialized:
     // has key ability and no custom transfer function
