@@ -1,7 +1,10 @@
 import {Ed25519Keypair, JsonRpcProvider, RawSigner, TypeTag} from '@mysten/sui.js';
-import {fromExportedKeypair} from "@mysten/sui.js";
-import {ExportedKeypair} from "@mysten/sui.js/src/cryptography/keypair";
+import {fromExportedKeypair,MoveEvent,ExportedKeypair} from "@mysten/sui.js";
+// import {ExportedKeypair} from "@mysten/sui.js/src/cryptography/keypair";
 import { packageObjectId } from './constants';
+// import { MoveEvent } from "@mysten/sui.js/src/types";
+// import { isMoveEvent } from "@mysten/sui.js/src/index"
+
 const provider = new JsonRpcProvider();
 const schema = new Ed25519Keypair().getKeyScheme();
 const private_key1 = 'c8cJIQOtx55JUNrT0VAGd43cEvscqnO+u4clcXickSlg+Q1PFrl1qKuBlKU0/7KA62GPNDL2++KaFMjHFfZKfg=='
@@ -25,6 +28,8 @@ const testAddress2 = '0x0895e19842c2a081b161f685aa2f3b816ceb50ed';
 const testAddress3 = '0xa9bb5225de506ba7b77f396f481d626a6cdbed9c';
 
 const login1 = "0xde152af5c7275d3e76715fe34e5e3402fdd146b0";
+
+const nft1 = "0x7a8d0d48f9b2578b0322da7d6a78d8fd98efb3b1";
 
 const create_login_info = async(signer: any) => {
     const moveCallTxn = await signer.executeMoveCall({
@@ -74,8 +79,41 @@ const mint = async (signer:any) =>{
     console.log(moveCallTxn);
 }
 
+const toggle_display = async (signer:any) =>{
+    const moveCallTxn = await signer.executeMoveCall({
+        packageObjectId,
+        module: 'nft_link',
+        function: 'toggle_display',
+        typeArguments: [],
+        arguments: [
+            nft1,
+        ],
+        gasBudget: 10000,
+    });
+    console.log(moveCallTxn);
+}
+
+const get_mint_event_data = async (provider: JsonRpcProvider) =>{
+    const mintEvent = await provider.getEvents(
+        {"MoveEvent": packageObjectId + "::nft_link::MintNFTLinkEvent"}, 
+        null,
+        null,
+        "ascending"
+    );  
+    const out: any = [];
+    for(let i = 0; i < mintEvent.data.length; i++){
+            let eventData: any = mintEvent.data[i].event;
+            out.push(eventData.moveEvent);
+    }
+    return out;
+}
+
 const main = async() =>{
     // await create_login_info(signer1);
-    await mint(signer1);
+    // await mint(signer1);
+    // await toggle_display(signer1);
+    const mintEventData = await get_mint_event_data(provider);
+    console.log(mintEventData);
+
 }
 main();

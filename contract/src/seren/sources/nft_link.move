@@ -106,51 +106,51 @@ module seren::nft_link {
     }
 
     // getter methods
-    public fun get_id(nft: &NFTLink): &UID {
+    public entry fun get_id(nft: &NFTLink): &UID {
         &nft.id
     }
 
-    public fun get_owner_address(nft: &NFTLink): &address {
+    public entry fun get_owner_address(nft: &NFTLink): &address {
         &nft.owner_address
     }
 
-    public fun get_display(nft: &NFTLink): &bool {
+    public entry fun get_display(nft: &NFTLink): &bool {
         &nft.display
     }
 
-    public fun get_session_id(nft: &NFTLink): &u64 {
+    public entry fun get_session_id(nft: &NFTLink): &u64 {
         &nft.session_id
     }
 
-    public fun get_session_description(nft: &NFTLink): &String {
+    public entry fun get_session_description(nft: &NFTLink): &String {
         &nft.session_description
     }
 
-    public fun get_session_type(nft: &NFTLink): &String {
+    public entry fun get_session_type(nft: &NFTLink): &String {
         &nft.session_type
     }
 
-    public fun get_session_image_url(nft: &NFTLink): &Url {
+    public entry fun get_session_image_url(nft: &NFTLink): &Url {
         &nft.session_image_url
     }
 
-    public fun get_session_starter_address(nft: &NFTLink): &address {
+    public entry fun get_session_starter_address(nft: &NFTLink): &address {
         &nft.session_starter_address
     }
 
-    public fun get_session_participant_addresses(nft: &NFTLink): &vector<address> {
+    public entry fun get_session_participant_addresses(nft: &NFTLink): &vector<address> {
         &nft.session_participant_addresses
     }
 
-    public fun get_session_location_latitude(nft: &NFTLink): &u64 {
+    public entry fun get_session_location_latitude(nft: &NFTLink): &u64 {
         &nft.session_location_latitude
     }
 
-    public fun get_session_location_longitude(nft: &NFTLink): &u64 {
+    public entry fun get_session_location_longitude(nft: &NFTLink): &u64 {
         &nft.session_location_longitude
     }
 
-    public fun get_session_timestamp(nft: &NFTLink): &u64 {
+    public entry fun get_session_timestamp(nft: &NFTLink): &u64 {
         &nft.session_timestamp
     }
 
