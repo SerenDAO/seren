@@ -26,3 +26,5 @@ build/
 
 # constants documenting my keys
 *constants*
+**/dist/*
+*.tsbuildinfo
