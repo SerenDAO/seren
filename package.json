@@ -19,7 +19,9 @@
   "homepage": "https://github.com/SerenDAO/seren#readme",
   "workspaces": [
     "packages/websocket_server",
-    "packages/web"
+    "packages/web",
+    "packages/app",
+    "test_script"
   ],
   "devDependencies": {
     "typescript": "^4.9.5"
