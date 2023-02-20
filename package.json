@@ -1,0 +1,27 @@
+{
+  "name": "seren",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SerenDAO/seren.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SerenDAO/seren/issues"
+  },
+  "homepage": "https://github.com/SerenDAO/seren#readme",
+  "workspaces": [
+    "packages/websocket_server",
+    "packages/web"
+  ],
+  "devDependencies": {
+    "typescript": "^4.9.5"
+  }
+}

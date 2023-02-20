@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>实时人数和按钮请求</title>
+</head>
+
+<body>
+  <div>当前在线人数：<span id="online-count">0</span></div>
+  <button id="btn">按住按钮请求</button>
+  <script>
+    // 建立 WebSocket 连接
+    const socket = new WebSocket('ws://localhost:8080');
+    // 页面加载完成后立即发送连接请求
+    socket.onopen = () => {
+      console.log('WebSocket 连接成功');
+      socket.send('连接请求');
+    };
+    // 接收服务器消息并更新在线人数
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.type === 'onlineCount') {
+        document.querySelector('#online-count').textContent = data.count;
+      }
+    };
+    // close connection when page is closed
+    const terminationEvent = 'onpagehide' in self ? 'pagehide' : 'unload';
+    window.addEventListener('unload', (event) => {
+      // if (event.persisted === false) {
+      // client is gone
+      socket.onclose = function () { };
+      socket.close();
+      // }
+    });
+    // 点击按钮时发送请求
+    document.querySelector('#btn').addEventListener('mousedown', () => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', 'https://seren.com/mint');
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          console.log(xhr.responseText);
+        }
+      };
+      xhr.send();
+    });
+
+  </script>
+</body>
+
+</html>
