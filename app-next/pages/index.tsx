@@ -46,7 +46,7 @@ export default function Home() {
 
       {component === "AvatarUpload" && <AvatarUpload component={component} setComponent={setComponent} rawSigner={rawSigner} loginInfo={loginInfo} setLoginInfo={setLoginInfo}/>}
 
-      {component === "UserHome" && <UserHome loginInfo={loginInfo} setLoginInfo={setLoginInfo}/> }
+      {component === "UserHome" && <UserHome loginInfo={loginInfo} setLoginInfo={setLoginInfo} address={address}/> }
 
     </div>
   );

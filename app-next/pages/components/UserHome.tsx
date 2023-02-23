@@ -12,20 +12,48 @@ import { provider, signer1, suiObjectId1, packageObjectId } from '../constants/c
 import CreateSuiAddressProps from '../type/CreateSuiAddressProps';
 import UserHomeProps from '../type/UserHomeProps';
 import { NavItem } from './NavItem';
+import UserProfile from './UserProfile';
+import UserStart from './UserStart';
+import { getObjectFields } from '@mysten/sui.js';
 
-const UserHome = ({loginInfo, setLoginInfo}: UserHomeProps) => {
+const UserHome = ({loginInfo, setLoginInfo, address}: UserHomeProps) => {
     
+    const [userComponent, setUserComponent] = useState<string>("UserStart");
+    const [ avatarUrl, setAvatarUrl] = useState<string>("");
+
+    const get_avatar_url = async (provider: JsonRpcProvider, loginInfo: string) => {
+        const obj = await provider.getObject(loginInfo);
+        const fields = getObjectFields(obj);
+        if(fields !== undefined) {
+            setAvatarUrl(fields.avatar_url);
+        }
+    }
+
+    useEffect(
+        () => {
+            if(loginInfo !== undefined) {
+                get_avatar_url(provider, loginInfo);
+            }
+        }, []
+    );
+
     useEffect(() => {
         console.log(loginInfo)
-    }, [])
+    }, []);
 
     return (
         <div>
             <span>
                 <button>Profile</button>
                 <button>Collection</button>
-                <button>Create Your Seren</button>
+                <button>Start</button>
             </span>
+
+            {userComponent === "UserProfile" && <UserProfile loginInfo={loginInfo} />}
+
+            {userComponent === "UserCollection" && <></>}
+
+            {userComponent === "UserStart" && <UserStart address={address} loginInfo={loginInfo} avatarUrl={avatarUrl}/>}
         </div>
     );
 }
