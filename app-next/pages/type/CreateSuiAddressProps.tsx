@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 import { generateKeyPair } from 'crypto';
 import { TransferSuiTransaction } from '@mysten/sui.js/dist/signers/txn-data-serializers/txn-data-serializer';
 import "bootstrap/dist/css/bootstrap.min.css";
-import FileUpload from '../components/FileUpload';
+import FileUpload from '../components/AvatarUpload';
 import { provider, signer1, suiObjectId1, packageObjectId } from '../constants/constants';
 
 

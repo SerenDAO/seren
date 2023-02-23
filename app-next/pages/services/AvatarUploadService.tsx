@@ -45,9 +45,9 @@ const upload = (file: File, onUploadProgress: any): Promise<any> => {
       );
     };
   
-    const FileUploadService = {
+    const AvatarUploadService = {
         upload,
         getFiles
     }
 
-    export default FileUploadService;
+    export default AvatarUploadService;

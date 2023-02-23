@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 import { generateKeyPair } from 'crypto';
 import { TransferSuiTransaction } from '@mysten/sui.js/dist/signers/txn-data-serializers/txn-data-serializer';
 import "bootstrap/dist/css/bootstrap.min.css";
-import FileUpload from './components/FileUpload';
+import AvatarUpload from './components/AvatarUpload';
 import CreateSuiAddress from './components/CreateSuiAddress';
 
 export default function Home() {
@@ -57,7 +57,7 @@ export default function Home() {
         />
       }
 
-      {component === "FileUpload" && <FileUpload />}
+      {component === "AvatarUpload" && <AvatarUpload />}
     </div>
   );
 }

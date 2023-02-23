@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import UploadService from "../services/FileUploadService";
-import IFile from "../type/File";
+import UploadService from "../services/AvatarUploadService";
+import Avatar from "../type/Avatar";
 
-const FileUpload: React.FC = () => {
+const AvatarUpload: React.FC = () => {
   const [currentFile, setCurrentFile] = useState<File>();
   const [progress, setProgress] = useState<number>(0);
   const [message, setMessage] = useState<string>("");
-  const [fileInfos, setFileInfos] = useState<IFile>(); 
+  const [fileInfos, setFileInfos] = useState<Avatar>(); 
 
   const selectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target;
@@ -93,6 +93,7 @@ const FileUpload: React.FC = () => {
           <p>File hash on IPFS: {fileInfos.Hash}</p>
           <p>File size: {fileInfos.Size}</p>
         </ul>
+        <button>Create Account using Avatar</button>
         </>
         }
 
@@ -100,4 +101,4 @@ const FileUpload: React.FC = () => {
   );
 };
 
-export default FileUpload;
+export default AvatarUpload;

@@ -8,7 +8,6 @@ import { useState, useEffect } from 'react';
 import { generateKeyPair } from 'crypto';
 import { TransferSuiTransaction } from '@mysten/sui.js/dist/signers/txn-data-serializers/txn-data-serializer';
 import "bootstrap/dist/css/bootstrap.min.css";
-import FileUpload from '../components/FileUpload';
 import { provider, signer1, suiObjectId1, packageObjectId } from '../constants/constants';
 import CreateSuiAddressProps from '../type/CreateSuiAddressProps';
 
@@ -71,7 +70,7 @@ const CreateSuiAddress = ({component, setComponent, keypair, setKeypair, publicK
         <p>private key: {secretKey}</p>
         <p>address: {address}</p>
         <p>balance: {suiBalance}</p>
-        <button onClick={()=>setComponent("FileUpload")}>Next</button>
+        <button onClick={()=>setComponent("AvatarUpload")}>Next</button>
         </>
         )}
       </div>
