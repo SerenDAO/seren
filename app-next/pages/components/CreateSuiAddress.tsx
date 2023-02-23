@@ -41,7 +41,7 @@ const CreateSuiAddress = ({component, setComponent, keypair, setKeypair, publicK
       setAddress(address);
   
       const txn: TransferSuiTransaction = {
-        amount: sui_to_mist(0.00001),
+        amount: sui_to_mist(0.0001),
         recipient: address,
         suiObjectId: suiObjectId1,
         gasBudget: 30000,

@@ -10,6 +10,7 @@ import { TransferSuiTransaction } from '@mysten/sui.js/dist/signers/txn-data-ser
 import "bootstrap/dist/css/bootstrap.min.css";
 import AvatarUpload from './components/AvatarUpload';
 import CreateSuiAddress from './components/CreateSuiAddress';
+import UserHome from './components/UserHome';
 
 export default function Home() {
   const [component, setComponent] = useState<string>("CreateAccount");
@@ -20,21 +21,7 @@ export default function Home() {
   const [rawSigner, setRawSigner] = useState<RawSigner>();
   const [address, setAddress] = useState<string>();
   const [suiBalance, setSuiBalance] = useState<number>();
-
-
-  // const create_login_info = async(signer: RawSigner, avatarUrl: string) => {
-  //   const moveCallTxn = await signer.executeMoveCall({
-  //       packageObjectId,
-  //       module: 'login_info',
-  //       function: 'create_login_info',
-  //       typeArguments: [],
-  //       arguments: [
-  //         avatarUrl
-  //       ],
-  //       gasBudget: 10000,
-  //   });
-  //   console.log(moveCallTxn);
-  // }
+  const [loginInfo, setLoginInfo] = useState<string>();
 
   return (
     <div>
@@ -57,7 +44,10 @@ export default function Home() {
         />
       }
 
-      {component === "AvatarUpload" && <AvatarUpload />}
+      {component === "AvatarUpload" && <AvatarUpload component={component} setComponent={setComponent} rawSigner={rawSigner} loginInfo={loginInfo} setLoginInfo={setLoginInfo}/>}
+
+      {component === "UserHome" && <UserHome loginInfo={loginInfo} setLoginInfo={setLoginInfo}/> }
+
     </div>
   );
 }
