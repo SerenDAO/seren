@@ -1,70 +1,95 @@
-import { WebSocketServer } from 'ws'
+import { AddressInfo, WebSocketServer, WebSocket } from 'ws'
 
-import { type IncomingMessage } from "http"
+import { IncomingHttpHeaders, type IncomingMessage } from "http"
 import { Socket } from 'node:net'
+import { createServer as createHttpsServer } from 'https'
+import { readFileSync } from 'node:fs';
 
+const HOST = '192.168.3.21'
+const PORT = 8987
 
-const wss = new WebSocketServer({ port: 8080 })
+const httpsServer = createHttpsServer({
+  cert: readFileSync(__dirname + '/../public/server.cert'),
+  key: readFileSync(__dirname + '/../public/server.key'),
+});
 
-// type Clients = {
-//   [key: string]: Socket[]
-// }
-type Clients = Socket[]
-
-// 保存所有连接的客户端
-const clients: Clients = []
-
-wss.on('error', console.error)
-
-wss.on('open', function open() {
-  console.log('open')
+const wsServer = new WebSocketServer({
+  server: httpsServer
 })
 
-wss.on('message', function message(data) {
+
+type RoomID = string
+type Client = {
+  id: IncomingHttpHeaders['sec-websocket-key'],
+  ws: WebSocket
+}
+type Clients = {
+  [key: RoomID]: Client[]
+}
+// type Clients = Socket[]
+
+// 保存所有连接的客户端
+let clients: Clients = {}
+
+wsServer.on('error', console.error)
+
+wsServer.on('listening', function open() {
+  console.log('listening')
+})
+
+
+wsServer.on('message', function message(data) {
   console.log('received: %s', data)
 })
 
-wss.on('connection', function connection(ws: WebSocket, request: IncomingMessage) {
-  const ip = request.socket.remoteAddress
+wsServer.on('connection', function connection(ws: WebSocket, request: IncomingMessage) {
+  const addressInfo = request.socket.address() as AddressInfo
+  const ip = Object.keys(addressInfo).includes('address') ? addressInfo.address : ''
+  const id = request.headers['sec-websocket-key'] as string
+  const roomID = request.url?.split('/')[1] as string
+
+  console.log('request.url', request.url)
   // add client to list
-  clients.push(request.socket)
-
-  console.log('connected from ' + ip)
-  console.log('connected from ' + request.socket.remotePort + request.socket.remoteFamily)
-
-  // 发送在线人数给所有客户端
-  const onlineCount = clients.length
-  broadcast(JSON.stringify({
-    type: 'onlineCount',
-    count: onlineCount
-  }))
-})
-
-// 监听连接关闭事件
-wss.on('close', (ws: WebSocket, request: IncomingMessage) => {
-  // remove client from list
-  const index = clients.indexOf(request.socket)
-  if (index > -1) {
-    clients.splice(index, 1)
+  const client = {
+    id,
+    ws
   }
+  clients.hasOwnProperty(roomID) ? clients[roomID].push(client) : clients[roomID] = [client]
 
-  console.log('close from ' + request.socket.remoteAddress)
-  // 发送在线人数给所有客户端
-  const onlineCount = clients.length
-  broadcast(JSON.stringify({
-    type: 'onlineCount',
-    count: onlineCount
-  }))
+  console.log(`connected from ${ip}:${request.socket.remotePort}`)
 
-  console.log('WebSocket 连接关闭')
+  ws.on('close', function () {
+    console.log('closed ' + request.socket.remoteAddress + ' ' + id)
+    const clientsInRoom = clients[roomID]
+    if (!clientsInRoom) return
+
+    clients[roomID] = clientsInRoom.filter(client => client.ws !== ws)
+    broadcastOnlineCount(roomID)
+  })
+
+  broadcastOnlineCount(roomID)
 })
+
+httpsServer.listen(PORT, HOST)
 
 // 向所有客户端广播消息
-function broadcast(message: string) {
-  clients.forEach((client) => {
+function broadcast(clients: Client[], message: string) {
+  let order = 0
+  clients.forEach(client => {
+    if (client.ws.readyState !== WebSocket.OPEN) {
+      return
+    }
 
-    wss.clients.forEach((client) => {
-      client.send(message)
-    })
+    console.log('broadcast to client ', order)
+    client.ws.send(message)
+    order++;
   })
 }
+
+function broadcastOnlineCount(roomID: RoomID) {
+  broadcast(clients[roomID], JSON.stringify({
+    type: 'onlineCount',
+    count: clients[roomID] ? clients[roomID].length : 0
+  }))
+}
+

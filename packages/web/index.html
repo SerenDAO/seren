@@ -9,30 +9,48 @@
 <body>
   <div>当前在线人数：<span id="online-count">0</span></div>
   <button id="btn">按住按钮请求</button>
+  <button id="close">close</button>
   <script>
+    const HOST = '192.168.3.21'
+    const PORT = 8987
+    const roomID = window.location.pathname.substring(1);
+    console.log('roomID', roomID);
     // 建立 WebSocket 连接
-    const socket = new WebSocket('ws://localhost:8080');
+    const socket = new WebSocket(`wss://${HOST}:${PORT}/${roomID}`);
+
+
     // 页面加载完成后立即发送连接请求
     socket.onopen = () => {
       console.log('WebSocket 连接成功');
-      socket.send('连接请求');
+      socket.send('request for connection');
     };
+
     // 接收服务器消息并更新在线人数
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
+      console.log('receive', data);
       if (data.type === 'onlineCount') {
         document.querySelector('#online-count').textContent = data.count;
       }
     };
+
+    socket.onclose = function () {
+      console.log('WebSocket 连接关闭');
+    };
+
     // close connection when page is closed
-    const terminationEvent = 'onpagehide' in self ? 'pagehide' : 'unload';
-    window.addEventListener('unload', (event) => {
-      // if (event.persisted === false) {
-      // client is gone
-      socket.onclose = function () { };
+    // const terminationEvent = 'onpagehide' in self ? 'pagehide' : 'unload';
+    document.addEventListener("beforeunload", function (event) {
+      e.preventDefault();
+      confirm('Are you sure you want to leave?');
       socket.close();
-      // }
-    });
+    }, { capture: true });
+
+    // api/press/roomID
+    // 最晚按下
+    // api/release/roomID
+    // 最早松开
+
     // 点击按钮时发送请求
     document.querySelector('#btn').addEventListener('mousedown', () => {
       const xhr = new XMLHttpRequest();
@@ -43,6 +61,12 @@
         }
       };
       xhr.send();
+    });
+
+
+    document.querySelector('#close').addEventListener('click', () => {
+      console.log('socket close');
+      socket.close();
     });
 
   </script>
