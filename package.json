@@ -19,7 +19,8 @@
     "packages": [
       "packages/websocket_server",
       "packages/web",
-      "test_script"
+      "test_script",
+      "app-next"
     ],
     "nohoist": [
       "app"

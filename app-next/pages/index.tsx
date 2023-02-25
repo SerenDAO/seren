@@ -2,19 +2,19 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
-import {Ed25519Keypair, Secp256k1Keypair, JsonRpcProvider, RawSigner, TypeTag, Network } from '@mysten/sui.js';
-import {fromExportedKeypair,MoveEvent,ExportedKeypair} from "@mysten/sui.js";
+import { Ed25519Keypair, Secp256k1Keypair, JsonRpcProvider, RawSigner, TypeTag, Network } from '@mysten/sui.js';
+import { fromExportedKeypair, MoveEvent, ExportedKeypair } from "@mysten/sui.js";
 import { useState, useEffect } from 'react';
 import { generateKeyPair } from 'crypto';
 import { TransferSuiTransaction } from '@mysten/sui.js/dist/signers/txn-data-serializers/txn-data-serializer';
 import "bootstrap/dist/css/bootstrap.min.css";
-import AvatarUpload from './components/AvatarUpload';
-import CreateSuiAddress from './components/CreateSuiAddress';
-import UserHome from './components/UserHome';
+import AvatarUpload from '../components/AvatarUpload';
+import CreateSuiAddress from '../components/CreateSuiAddress';
+import UserHome from '../components/UserHome';
 
 export default function Home() {
   const [component, setComponent] = useState<string>("CreateAccount");
-  
+
   const [keypair, setKeypair] = useState<Ed25519Keypair>();
   const [publicKey, setPublicKey] = useState<string>();
   const [secretKey, setSecretKey] = useState<string>();
@@ -25,8 +25,8 @@ export default function Home() {
 
   return (
     <div>
-      {component === "CreateAccount" && 
-        <CreateSuiAddress 
+      {component === "CreateAccount" &&
+        <CreateSuiAddress
           component={component}
           setComponent={setComponent}
           keypair={keypair}
@@ -44,9 +44,9 @@ export default function Home() {
         />
       }
 
-      {component === "AvatarUpload" && <AvatarUpload component={component} setComponent={setComponent} rawSigner={rawSigner} loginInfo={loginInfo} setLoginInfo={setLoginInfo}/>}
+      {component === "AvatarUpload" && <AvatarUpload component={component} setComponent={setComponent} rawSigner={rawSigner} loginInfo={loginInfo} setLoginInfo={setLoginInfo} />}
 
-      {component === "UserHome" && <UserHome loginInfo={loginInfo} setLoginInfo={setLoginInfo} address={address}/> }
+      {component === "UserHome" && <UserHome loginInfo={loginInfo} setLoginInfo={setLoginInfo} address={address} />}
 
     </div>
   );

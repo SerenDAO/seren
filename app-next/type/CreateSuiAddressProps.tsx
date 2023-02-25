@@ -2,8 +2,8 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
-import {Ed25519Keypair, Secp256k1Keypair, JsonRpcProvider, RawSigner, TypeTag, Network } from '@mysten/sui.js';
-import {fromExportedKeypair,MoveEvent,ExportedKeypair} from "@mysten/sui.js";
+import { Ed25519Keypair, Secp256k1Keypair, JsonRpcProvider, RawSigner, TypeTag, Network } from '@mysten/sui.js';
+import { fromExportedKeypair, MoveEvent, ExportedKeypair } from "@mysten/sui.js";
 import { useState, useEffect } from 'react';
 import { generateKeyPair } from 'crypto';
 import { TransferSuiTransaction } from '@mysten/sui.js/dist/signers/txn-data-serializers/txn-data-serializer';
