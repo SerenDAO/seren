@@ -2,8 +2,8 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
-import {Ed25519Keypair, Secp256k1Keypair, JsonRpcProvider, RawSigner, TypeTag, Network } from '@mysten/sui.js';
-import {fromExportedKeypair,MoveEvent,ExportedKeypair} from "@mysten/sui.js";
+import { Ed25519Keypair, Secp256k1Keypair, JsonRpcProvider, RawSigner, TypeTag, Network } from '@mysten/sui.js';
+import { fromExportedKeypair, MoveEvent, ExportedKeypair } from "@mysten/sui.js";
 import { useState, useEffect, useRef } from 'react';
 import { generateKeyPair } from 'crypto';
 import { TransferSuiTransaction } from '@mysten/sui.js/dist/signers/txn-data-serializers/txn-data-serializer';
@@ -17,11 +17,11 @@ import UserStartProps from '../type/UserStartProps';
 import { addRequestMeta } from 'next/dist/server/request-meta';
 import { getObjectFields } from '@mysten/sui.js';
 
-const UserStart = ({loginInfo, address, avatarUrl}: UserStartProps) => {
+const UserStart = ({ loginInfo, address, avatarUrl }: UserStartProps) => {
 
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const [ sessionInfo, setSessionInfo ] = useState<{
+    const [sessionInfo, setSessionInfo] = useState<{
         session_id: number,
         session_description: string,
         session_type: string,
@@ -43,7 +43,7 @@ const UserStart = ({loginInfo, address, avatarUrl}: UserStartProps) => {
         session_timestamp: 0
     });
 
-    const mint = async (signer:any) =>{
+    const mint = async (signer: any) => {
         const {
             session_id,
             session_description,
@@ -97,13 +97,13 @@ const UserStart = ({loginInfo, address, avatarUrl}: UserStartProps) => {
     //     }
     // }, [])
 
-    return(
+    return (
         <div>
             {sessionInfo.session_description === "" ? (
                 <div>
                     <input ref={inputRef}></input>
                     <button onClick={() => {
-                        if(inputRef.current !== null) {
+                        if (inputRef.current !== null) {
                             set_session_description(inputRef.current.value);
                         }
                     }}>
@@ -112,14 +112,14 @@ const UserStart = ({loginInfo, address, avatarUrl}: UserStartProps) => {
                 </div>
             ) : (
                 sessionInfo.session_participant_addresses.map((address, index) => (
-                    <div>
+                    <div key={index}>
                         <div>{address}</div>
-                        <img 
+                        <Image
                             src={avatarUrl} // this is just user's own avatar, need to generalize to getting everyone's avatar using their address
                             alt="image"
                         />
                     </div>
-                    )
+                )
                 )
             )
             }
