@@ -1,5 +1,5 @@
 import FormData from 'form-data';
-import http from '../components/http-common';
+import http from './http-common';
 
 
 const infuraProjectId = "2M5xY2I3ThsQ2NYzVzjLAlWRWR3";
