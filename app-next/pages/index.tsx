@@ -11,6 +11,7 @@ import CreateSuiAddress from '../components/CreateSuiAddress';
 import UserHome from '../components/UserHome';
 // import "bootstrap/dist/css/bootstrap.min.css";
 import styles from '@/styles/Home.module.css'
+import serenLogo from '../public/circle.png'
 
 export default function Home() {
   const [component, setComponent] = useState<string>("CreateAccount");
@@ -24,7 +25,19 @@ export default function Home() {
   const [loginInfo, setLoginInfo] = useState<string>();
 
   return (
-    <div>
+
+    <div className={styles.indexPage}>
+      <div className={styles.serenLogo}>
+        <Image 
+          src={serenLogo}
+          alt= "seren-logo"
+          fill
+          sizes="(max-width: 768px) 80vw,
+              (max-width: 1200px) 50vw,
+              33vw"
+        />
+      </div>
+      
       {component === "CreateAccount" &&
         <CreateSuiAddress
           component={component}
@@ -42,13 +55,14 @@ export default function Home() {
           suiBalance={suiBalance}
           setSuiBalance={setSuiBalance}
         />
-      }
+      } 
 
       {component === "AvatarUpload" && <AvatarUpload component={component} setComponent={setComponent} rawSigner={rawSigner} loginInfo={loginInfo} setLoginInfo={setLoginInfo} />}
 
       {component === "UserHome" && <UserHome loginInfo={loginInfo} setLoginInfo={setLoginInfo} address={address} />}
 
     </div>
+  
   );
 }
 

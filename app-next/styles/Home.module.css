@@ -1,3 +1,27 @@
+.indexPage {
+  width: 100vw;
+  height: 100vh;
+  background-color: #F43F5E;
+  /* background-image: url(../public/circle.png); */
+  /* background-size : cover; */
+  
+}
+
+.serenLogo {
+  /* margin: 0 auto; */
+  position: absolute;
+  overflow: "hidden";  
+  width: 50vw;
+  height: 50vh;
+  top: 25%;
+  left: 25%;
+  
+}
+
+.logInButton {
+  position: relative;
+  bottom: 20vh;
+}
 .main {
   display        : flex;
   flex-direction : column;

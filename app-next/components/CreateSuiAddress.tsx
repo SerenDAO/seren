@@ -60,7 +60,7 @@ const CreateSuiAddress = ({ component, setComponent, keypair, setKeypair, public
 
   return (
     <div>
-      <button onClick={generate_and_fund_keypair} disabled={displayKeys}>Create and Fund Sui Address</button>
+      <button onClick={generate_and_fund_keypair} disabled={displayKeys}>Login</button>
       {displayKeys && (
         <>
           <h3>Account creation successful, please take notes of the following information:</h3>
