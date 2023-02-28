@@ -1,0 +1,9 @@
+.logInButton {
+  background-color: #FACC15;
+  color: #F43F5E;
+  font-style: bold;
+  align-items: center;
+  width: 80vm;
+  border: none;
+  border-radius: 45rpx;
+}

@@ -2,25 +2,17 @@
   width: 100vw;
   height: 100vh;
   background-color: #F43F5E;
-  /* background-image: url(../public/circle.png); */
-  /* background-size : cover; */
-  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
-.serenLogo {
-  /* margin: 0 auto; */
-  position: absolute;
-  overflow: "hidden";  
-  width: 50vw;
-  height: 50vh;
-  top: 25%;
-  left: 25%;
-  
-}
+
 
 .logInButton {
-  position: relative;
-  bottom: 20vh;
+  position: absolute;
+  bottom: 10vh;
 }
 .main {
   display        : flex;

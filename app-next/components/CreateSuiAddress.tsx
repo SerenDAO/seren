@@ -1,6 +1,3 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
 import { Ed25519Keypair, Secp256k1Keypair, JsonRpcProvider, RawSigner, TypeTag, Network } from '@mysten/sui.js';
 import { fromExportedKeypair, MoveEvent, ExportedKeypair } from "@mysten/sui.js";
 import { useState, useEffect } from 'react';
@@ -8,6 +5,7 @@ import { generateKeyPair } from 'crypto';
 import { TransferSuiTransaction } from '@mysten/sui.js/dist/signers/txn-data-serializers/txn-data-serializer';
 import { provider, signer1, suiObjectId1, packageObjectId } from '../constants/constants';
 import CreateSuiAddressProps from '../type/CreateSuiAddressProps';
+import styles from  './styles/Login.module.css'
 
 const CreateSuiAddress = ({ component, setComponent, keypair, setKeypair, publicKey, setPublicKey, secretKey, setSecretKey, rawSigner, setRawSigner, address, setAddress, suiBalance, setSuiBalance }: CreateSuiAddressProps) => {
   // const [keypair, setKeypair] = useState<Ed25519Keypair>();
@@ -60,7 +58,7 @@ const CreateSuiAddress = ({ component, setComponent, keypair, setKeypair, public
 
   return (
     <div>
-      <button onClick={generate_and_fund_keypair} disabled={displayKeys}>Login</button>
+      <button onClick={generate_and_fund_keypair} disabled={displayKeys} className={styles.logInButton}>Login</button>
       {displayKeys && (
         <>
           <h3>Account creation successful, please take notes of the following information:</h3>

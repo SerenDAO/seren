@@ -27,36 +27,35 @@ export default function Home() {
   return (
 
     <div className={styles.indexPage}>
-      <div className={styles.serenLogo}>
+
         <Image 
           src={serenLogo}
-          alt= "seren-logo"
-          fill
-          sizes="(max-width: 768px) 80vw,
-              (max-width: 1200px) 50vw,
-              33vw"
+          alt='seren-logo'
+          width={363}
+          height={363}
         />
-      </div>
       
-      {component === "CreateAccount" &&
-        <CreateSuiAddress
-          component={component}
-          setComponent={setComponent}
-          keypair={keypair}
-          setKeypair={setKeypair}
-          publicKey={publicKey}
-          setPublicKey={setPublicKey}
-          secretKey={secretKey}
-          setSecretKey={setSecretKey}
-          rawSigner={rawSigner}
-          setRawSigner={setRawSigner}
-          address={address}
-          setAddress={setAddress}
-          suiBalance={suiBalance}
-          setSuiBalance={setSuiBalance}
-        />
-      } 
-
+      <div className={styles.logInButton}>
+        {component === "CreateAccount" &&
+          <CreateSuiAddress
+            component={component}
+            setComponent={setComponent}
+            keypair={keypair}
+            setKeypair={setKeypair}
+            publicKey={publicKey}
+            setPublicKey={setPublicKey}
+            secretKey={secretKey}
+            setSecretKey={setSecretKey}
+            rawSigner={rawSigner}
+            setRawSigner={setRawSigner}
+            address={address}
+            setAddress={setAddress}
+            suiBalance={suiBalance}
+            setSuiBalance={setSuiBalance}
+          />
+          
+        }
+      </div>
       {component === "AvatarUpload" && <AvatarUpload component={component} setComponent={setComponent} rawSigner={rawSigner} loginInfo={loginInfo} setLoginInfo={setLoginInfo} />}
 
       {component === "UserHome" && <UserHome loginInfo={loginInfo} setLoginInfo={setLoginInfo} address={address} />}
