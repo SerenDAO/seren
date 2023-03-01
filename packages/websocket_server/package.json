@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "npx tsc --build && cross-env PORT=8989 node dist/index.js",
-    "start": "npx tsc --build && cross-env PORT=8987 node dist/index.js"
+    "start": "npx tsc --build && node dist/index.js"
   },
   "repository": {
     "type": "git",
