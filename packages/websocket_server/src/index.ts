@@ -8,13 +8,14 @@ import { readFileSync } from 'node:fs'
 const PORT = process.env.PORT
 console.log('listen on PORT', PORT)
 
-const httpsServer = createHttpsServer({
-  cert: readFileSync(__dirname + '/../public/server.cert'),
-  key: readFileSync(__dirname + '/../public/server.key'),
-});
+// const httpsServer = createHttpsServer({
+//   cert: readFileSync(__dirname + '/../public/server.cert'),
+//   key: readFileSync(__dirname + '/../public/server.key'),
+// });
 
 const wsServer = new WebSocketServer({
-  server: httpsServer
+  // server: httpsServer
+  port: + PORT!
 })
 
 
@@ -70,7 +71,7 @@ wsServer.on('connection', function connection(ws: WebSocket, request: IncomingMe
   broadcastOnlineCount(roomID)
 })
 
-httpsServer.listen(PORT)
+// httpsServer.listen(PORT)
 
 // 向所有客户端广播消息
 function broadcast(clients: Client[], message: string) {
