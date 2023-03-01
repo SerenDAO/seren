@@ -1,9 +1,19 @@
-.logInButton {
+.logBox {
+  /* width: 60vw; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border-radius: 45rpx; */
+}
+
+.logButton {
   background-color: #FACC15;
   color: #F43F5E;
   font-style: bold;
+  font-size: 1.3em;
   align-items: center;
-  width: 80vm;
+  width: 70vw;
+  height: 5vh;
   border: none;
-  border-radius: 45rpx;
+  border-radius: 18px;
 }

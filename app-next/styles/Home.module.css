@@ -8,12 +8,12 @@
   position: relative;
 }
 
-
-
 .logInButton {
+  
   position: absolute;
   bottom: 10vh;
 }
+
 .main {
   display        : flex;
   flex-direction : column;
