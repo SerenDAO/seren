@@ -3,10 +3,10 @@ import { AddressInfo, WebSocketServer, WebSocket } from 'ws'
 import { IncomingHttpHeaders, type IncomingMessage } from "http"
 import { Socket } from 'node:net'
 import { createServer as createHttpsServer } from 'https'
-import { readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs'
 
-const HOST = '0.0.0.0'
-const PORT = 8987
+const PORT = process.env.PORT
+console.log('listen on PORT', PORT)
 
 const httpsServer = createHttpsServer({
   cert: readFileSync(__dirname + '/../public/server.cert'),
@@ -70,7 +70,7 @@ wsServer.on('connection', function connection(ws: WebSocket, request: IncomingMe
   broadcastOnlineCount(roomID)
 })
 
-httpsServer.listen(PORT, HOST)
+httpsServer.listen(PORT)
 
 // 向所有客户端广播消息
 function broadcast(clients: Client[], message: string) {

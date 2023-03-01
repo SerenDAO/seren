@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "npx tsc --build && node dist/index.js"
+    "dev": "npx tsc --build && cross-env PORT=8989 node dist/index.js",
+    "start": "npx tsc --build && cross-env PORT=8987 node dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,10 @@
   },
   "description": "",
   "dependencies": {
+    "cross-env": "^7.0.3",
     "ws": "^8.12.1"
+  },
+  "engines": {
+    "node": ">=18.14.1"
   }
 }
