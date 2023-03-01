@@ -1,9 +1,10 @@
 .logBox {
-  /* width: 60vw; */
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* border-radius: 45rpx; */
+  flex-direction: column;
+  top: 15vh;
 }
 
 .logButton {
@@ -16,4 +17,12 @@
   height: 5vh;
   border: none;
   border-radius: 18px;
+  bottom: 0;
+}
+
+.userKey {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

@@ -9,7 +9,7 @@
 }
 
 .logInButton {
-  
+  height: 20vh;
   position: absolute;
   bottom: 10vh;
 }

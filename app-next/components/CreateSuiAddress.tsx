@@ -1,4 +1,4 @@
-import { Ed25519Keypair, Secp256k1Keypair, JsonRpcProvider, RawSigner, TypeTag, Network } from '@mysten/sui.js';
+  import { Ed25519Keypair, Secp256k1Keypair, JsonRpcProvider, RawSigner, TypeTag, Network } from '@mysten/sui.js';
 import { fromExportedKeypair, MoveEvent, ExportedKeypair } from "@mysten/sui.js";
 import { useState, useEffect } from 'react';
 import { generateKeyPair } from 'crypto';
@@ -60,14 +60,15 @@ const CreateSuiAddress = ({ component, setComponent, keypair, setKeypair, public
     <div className={styles.logBox}>
       <button onClick={generate_and_fund_keypair} disabled={displayKeys} className={styles.logButton}>Login</button>
       {displayKeys && (
-        <>
-          <h3>Account creation successful, please take notes of the following information:</h3>
-          <p>public key: {publicKey}</p>
-          <p>private key: {secretKey}</p>
-          <p>address: {address}</p>
-          <p>balance: {suiBalance}</p>
-          <button onClick={() => setComponent("AvatarUpload")}>Next</button>
-        </>
+        <div className={styles.userKey}>
+          {/* <h3>Account creation successful, please take notes of the following information:</h3> */}
+          {/* <p>public key: {publicKey}</p> */}
+          <p>Please Save Your Private key:</p>
+          <p>{secretKey}</p>
+          {/* <p>address: {address}</p> */}
+          {/* <p>balance: {suiBalance}</p> */}
+          <button onClick={() => setComponent("AvatarUpload")} className={styles.logButton}>Next</button>
+        </div>
       )}
     </div>
   );
