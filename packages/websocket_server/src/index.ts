@@ -5,7 +5,7 @@ import { Socket } from 'node:net'
 import { createServer as createHttpsServer } from 'https'
 import { readFileSync } from 'node:fs';
 
-const HOST = '192.168.3.21'
+const HOST = '0.0.0.0'
 const PORT = 8987
 
 const httpsServer = createHttpsServer({
