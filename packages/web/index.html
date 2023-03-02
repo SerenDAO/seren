@@ -16,7 +16,7 @@
     const roomID = window.location.pathname.substring(1);
     console.log('roomID', roomID);
     // 建立 WebSocket 连接
-    const socket = new WebSocket(`wss://${HOST}:${PORT}/${roomID}`);
+    const socket = new WebSocket(`ws://${HOST}:${PORT}/${roomID}`);
 
 
     // 页面加载完成后立即发送连接请求
