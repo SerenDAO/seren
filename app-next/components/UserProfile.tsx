@@ -1,7 +1,7 @@
-import UserProfileProps from '../type/UserProfileProps';
-import { Ed25519Keypair, Secp256k1Keypair, JsonRpcProvider, RawSigner, TypeTag, Network } from '@mysten/sui.js';
-import { provider, signer1, suiObjectId1, packageObjectId } from '../constants/constants';
-import { useState } from "react";
+import UserProfileProps from '../type/UserProfileProps'
+import { Ed25519Keypair, Secp256k1Keypair, JsonRpcProvider, RawSigner, TypeTag, Network } from '@mysten/sui.js'
+import { provider, signer1, suiObjectId1, packageObjectId } from '../constants/constants'
+import { useState } from "react"
 
 const UserProfile = ({ loginInfo }: UserProfileProps) => {
 
@@ -11,21 +11,21 @@ const UserProfile = ({ loginInfo }: UserProfileProps) => {
             null,
             null,
             "ascending"
-        );
-        const out: any = [];
+        )
+        const out: any = []
         for (let i = 0; i < mintEvent.data.length; i++) {
-            let eventData: any = mintEvent.data[i].event;
-            out.push(eventData.moveEvent);
+            let eventData: any = mintEvent.data[i].event
+            out.push(eventData.moveEvent)
         }
-        console.log(out);
-        return out;
+        console.log(out)
+        return out
     }
 
     return (
         <div>
 
         </div>
-    );
+    )
 }
 
-export default UserProfile;
+export default UserProfile

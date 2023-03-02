@@ -1,37 +1,37 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
-import { Ed25519Keypair, Secp256k1Keypair, JsonRpcProvider, RawSigner, TypeTag, Network } from '@mysten/sui.js';
-import { fromExportedKeypair, MoveEvent, ExportedKeypair } from "@mysten/sui.js";
-import { useState, useEffect } from 'react';
-import { generateKeyPair } from 'crypto';
-import { TransferSuiTransaction } from '@mysten/sui.js/dist/signers/txn-data-serializers/txn-data-serializer';
-import { provider, signer1, suiObjectId1, packageObjectId } from '../constants/constants';
-import CreateSuiAddressProps from '../type/CreateSuiAddressProps';
-import UserHomeProps from '../type/UserHomeProps';
-import { NavItem } from './NavItem';
-import UserProfile from './UserProfile';
-import UserStart from './UserStart';
-import { getObjectFields } from '@mysten/sui.js';
+import { Ed25519Keypair, Secp256k1Keypair, JsonRpcProvider, RawSigner, TypeTag, Network } from '@mysten/sui.js'
+import { fromExportedKeypair, MoveEvent, ExportedKeypair } from "@mysten/sui.js"
+import { useState, useEffect } from 'react'
+import { generateKeyPair } from 'crypto'
+import { TransferSuiTransaction } from '@mysten/sui.js/dist/signers/txn-data-serializers/txn-data-serializer'
+import { provider, signer1, suiObjectId1, packageObjectId } from '../constants/constants'
+import CreateSuiAddressProps from '../type/CreateSuiAddressProps'
+import UserHomeProps from '../type/UserHomeProps'
+import { NavItem } from './NavItem'
+import UserProfile from './UserProfile'
+import UserStart from './UserStart'
+import { getObjectFields } from '@mysten/sui.js'
 
 const UserHome = ({ loginInfo, setLoginInfo, address }: UserHomeProps) => {
 
-    const [userComponent, setUserComponent] = useState<string>("UserStart");
-    const [avatarUrl, setAvatarUrl] = useState<string>("");
+    const [userComponent, setUserComponent] = useState<string>("UserStart")
+    const [avatarUrl, setAvatarUrl] = useState<string>("")
 
     const get_avatar_url = async (provider: JsonRpcProvider, loginInfo: string) => {
-        const obj = await provider.getObject(loginInfo);
-        const fields = getObjectFields(obj);
+        const obj = await provider.getObject(loginInfo)
+        const fields = getObjectFields(obj)
         if (fields !== undefined) {
-            setAvatarUrl(fields.avatar_url);
+            setAvatarUrl(fields.avatar_url)
         }
     }
 
     useEffect(() => {
         if (loginInfo !== undefined) {
-            get_avatar_url(provider, loginInfo);
+            get_avatar_url(provider, loginInfo)
         }
-    }, [loginInfo]);
+    }, [loginInfo])
 
     return (
         <div className="profile-page">
@@ -50,10 +50,10 @@ const UserHome = ({ loginInfo, setLoginInfo, address }: UserHomeProps) => {
             <Image src="/circle.png" alt='seren circle' width='100'
                 height={100} /> */}
         </div>
-    );
+    )
 }
 
-export default UserHome;
+export default UserHome
 
 // {/* <nav className="navbar py-4 px-4 bg-base-100">
 //             <div className="flex-1">

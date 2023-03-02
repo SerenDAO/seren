@@ -1,23 +1,23 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
-import { Ed25519Keypair, Secp256k1Keypair, JsonRpcProvider, RawSigner, TypeTag, Network } from '@mysten/sui.js';
-import { fromExportedKeypair, MoveEvent, ExportedKeypair } from "@mysten/sui.js";
-import { useState, useEffect, useRef } from 'react';
-import { generateKeyPair } from 'crypto';
-import { TransferSuiTransaction } from '@mysten/sui.js/dist/signers/txn-data-serializers/txn-data-serializer';
-import { provider, signer1, suiObjectId1, packageObjectId } from '../constants/constants';
-import CreateSuiAddressProps from '../type/CreateSuiAddressProps';
-import UserHomeProps from '../type/UserHomeProps';
-import { NavItem } from './NavItem';
-import UserProfile from './UserProfile';
-import UserStartProps from '../type/UserStartProps';
-import { addRequestMeta } from 'next/dist/server/request-meta';
-import { getObjectFields } from '@mysten/sui.js';
+import { Ed25519Keypair, Secp256k1Keypair, JsonRpcProvider, RawSigner, TypeTag, Network } from '@mysten/sui.js'
+import { fromExportedKeypair, MoveEvent, ExportedKeypair } from "@mysten/sui.js"
+import { useState, useEffect, useRef } from 'react'
+import { generateKeyPair } from 'crypto'
+import { TransferSuiTransaction } from '@mysten/sui.js/dist/signers/txn-data-serializers/txn-data-serializer'
+import { provider, signer1, suiObjectId1, packageObjectId } from '../constants/constants'
+import CreateSuiAddressProps from '../type/CreateSuiAddressProps'
+import UserHomeProps from '../type/UserHomeProps'
+import { NavItem } from './NavItem'
+import UserProfile from './UserProfile'
+import UserStartProps from '../type/UserStartProps'
+import { addRequestMeta } from 'next/dist/server/request-meta'
+import { getObjectFields } from '@mysten/sui.js'
 
 const UserStart = ({ loginInfo, address, avatarUrl }: UserStartProps) => {
 
-    const inputRef = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null)
 
     const [sessionInfo, setSessionInfo] = useState<{
         session_id: number,
@@ -39,7 +39,7 @@ const UserStart = ({ loginInfo, address, avatarUrl }: UserStartProps) => {
         session_location_latitude: 0,
         session_location_longitude: 0,
         session_timestamp: 0
-    });
+    })
 
     const mint = async (signer: any) => {
         const {
@@ -52,7 +52,7 @@ const UserStart = ({ loginInfo, address, avatarUrl }: UserStartProps) => {
             session_location_latitude,
             session_location_longitude,
             session_timestamp
-        } = sessionInfo;
+        } = sessionInfo
         const moveCallTxn = await signer.executeMoveCall({
             packageObjectId,
             module: 'nft_link',
@@ -71,22 +71,22 @@ const UserStart = ({ loginInfo, address, avatarUrl }: UserStartProps) => {
                 session_timestamp,
             ],
             gasBudget: 10000,
-        });
-        console.log(moveCallTxn);
+        })
+        console.log(moveCallTxn)
     }
 
     const set_session_description = (sessionDescription: string) => {
         setSessionInfo({
             ...sessionInfo,
             session_description: sessionDescription,
-        });
+        })
     }
 
     const add_session_participant_address = (sessionParticipantAddress: string) => {
         setSessionInfo({
             ...sessionInfo,
             session_participant_addresses: [...sessionInfo.session_participant_addresses, sessionParticipantAddress]
-        });
+        })
     }
 
     // useEffect(() => {
@@ -102,7 +102,7 @@ const UserStart = ({ loginInfo, address, avatarUrl }: UserStartProps) => {
                     <input ref={inputRef}></input>
                     <button onClick={() => {
                         if (inputRef.current !== null) {
-                            set_session_description(inputRef.current.value);
+                            set_session_description(inputRef.current.value)
                         }
                     }}>
                         Start Event
@@ -122,10 +122,10 @@ const UserStart = ({ loginInfo, address, avatarUrl }: UserStartProps) => {
             )
             }
         </div>
-    );
+    )
 }
 
-export default UserStart;
+export default UserStart
 
 // <div>
 // <input
