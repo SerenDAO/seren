@@ -130,9 +130,11 @@ const AvatarUpload = ({ component, setComponent, rawSigner, loginInfo, setLoginI
 
       {fileInfos &&
         <>
-          <img
-            src={"https://seren.infura-ipfs.io/ipfs/" + fileInfos.Hash}
-            alt="uploaded avatar" />
+          {// eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={"https://seren.infura-ipfs.io/ipfs/" + fileInfos.Hash}
+              alt="uploaded avatar" />
+          }
           <ul className="list-group list-group-flush">
             <p>File name: {fileInfos.Name}</p>
             <p>File hash on IPFS: {fileInfos.Hash}</p>
