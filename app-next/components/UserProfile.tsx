@@ -1,29 +1,34 @@
 import UserProfileProps from '../type/UserProfileProps'
-import { Ed25519Keypair, Secp256k1Keypair, JsonRpcProvider, RawSigner, TypeTag, Network } from '@mysten/sui.js'
-import { provider, signer1, suiObjectId1, packageObjectId } from '../constants/constants'
-import { useState } from "react"
+import { provider } from '../constants/constants'
+import { useEffect, useState } from "react"
+import { JsonRpcProvider, getObjectFields } from '@mysten/sui.js'
+import Avatar from './Avatar'
+import style from './styles/UserProfile.module.css'
 
 const UserProfile = ({ loginInfo }: UserProfileProps) => {
+    const [avatarUrl, setAvatarUrl] = useState<string>('')
+    const [name, setName] = useState<string>('')
 
-    const get_mint_event_data = async (provider: JsonRpcProvider) => {
-        const mintEvent = await provider.getEvents(
-            { "MoveEvent": packageObjectId + "::nft_link::MintNFTLinkEvent" },
-            null,
-            null,
-            "ascending"
-        )
-        const out: any = []
-        for (let i = 0; i < mintEvent.data.length; i++) {
-            let eventData: any = mintEvent.data[i].event
-            out.push(eventData.moveEvent)
-        }
-        console.log(out)
-        return out
+    const get_avatar_url = async (provider: JsonRpcProvider, loginInfo: string) => {
+        const obj = await provider.getObject(loginInfo)
+        const fields = getObjectFields(obj)
+        return fields?.avatar_url
     }
 
-    return (
-        <div>
+    useEffect(() => {
+        if (loginInfo === undefined) return
 
+        get_avatar_url(provider, loginInfo).then(avatarUrl => setAvatarUrl(avatarUrl))
+
+        setName(window.localStorage.getItem("name") || "")
+
+    }, [loginInfo])
+
+
+    return (
+        <div className={style.profile}>
+            <Avatar className={style.avatar} url={avatarUrl} />
+            <span className={style.name}>{name}</span>
         </div>
     )
 }

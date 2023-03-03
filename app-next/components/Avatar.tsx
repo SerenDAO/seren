@@ -6,7 +6,7 @@ import style from './styles/Avatar.module.css'
 
 export default function Avatar({ className, url, width, height }: AvatarProps) {
   return (
-    <div className={className + ' ' + style.avatar}>
+    <div className={(className || '') + ' ' + style.avatar}>
       <Image
         className={style.avatarImage}
         src={url}

@@ -15,7 +15,7 @@ import UserStartProps from '../type/UserStartProps'
 import { addRequestMeta } from 'next/dist/server/request-meta'
 import { getObjectFields } from '@mysten/sui.js'
 
-const UserStart = ({ loginInfo, address, avatarUrl }: UserStartProps) => {
+const EventStart = ({ loginInfo, address, avatarUrl }: UserStartProps) => {
 
     const sessionDescriptionRef = useRef<HTMLInputElement>(null)
     const sessionNewParticipantAddressRef = useRef<HTMLInputElement>(null)
@@ -220,7 +220,7 @@ const UserStart = ({ loginInfo, address, avatarUrl }: UserStartProps) => {
     )
 }
 
-export default UserStart
+export default EventStart
 
 // <div>
 // <input
