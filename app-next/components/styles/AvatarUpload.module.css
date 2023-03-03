@@ -1,0 +1,71 @@
+.fileInput {
+  display      : inline-block;
+  background   : #fff;
+  border-radius: 50%;
+  width        : 42vw;
+  height       : 42vw;
+  color        : var(--primary-color);
+  position     : relative;
+}
+
+.fileInput>input {
+  opacity: 0;
+  width  : 100%;
+  height : 100%;
+}
+
+.fileInput>span {
+  display    : inline-block;
+  position   : absolute;
+  top        : 0;
+  left       : 0;
+  width      : 100%;
+  height     : 100%;
+  line-height: 40vw;
+  text-align : center;
+}
+
+.avatar {
+  position: absolute;
+  left    : 0;
+  top     : 0;
+  width   : 100%;
+  height  : 100%;
+}
+
+.avatar>.avatar-image {
+  width : 100%;
+  height: auto;
+}
+
+.upload {}
+
+.name {
+  width           : 76vw;
+  height          : 57px;
+  color           : var(--primary-color);
+  background-color: #fff;
+  border-width    : 0;
+  border-radius   : 22px;
+  text-align      : center;
+  margin-top      : 1em;
+  font-size       : 25px;
+}
+
+.name::placeholder {
+  color: var(--primary-color);
+}
+
+.save {
+  width           : 76vw;
+  height          : 57px;
+  display         : flex;
+  justify-content : center;
+  align-items     : center;
+  background-color: var(--secondary-color);
+  margin-top      : 3em;
+  border-radius   : 22px;
+  color           : var(--primary-color);
+  font-size       : 25px;
+  font-weight     : bold;
+}

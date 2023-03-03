@@ -33,7 +33,21 @@
   --card-rgb          : 180, 185, 188;
   --card-border-rgb   : 131, 134, 135;
 
-  /* --bg-color: #F43F5E; */
+  --primary-color  : #F43F5E;
+  --bg-color       : #F43F5E;
+  --secondary-color: #f3ce49;
+}
+
+button,
+input {
+  border: none;
+}
+
+input:active,
+input:focus,
+input:focus-visible {
+  border : 2px solid var(--secondary-color);
+  outline: none;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -79,7 +93,7 @@ body {
 }
 
 body {
-  color     : rgb(var(--foreground-rgb));
+  color        : rgb(var(--foreground-rgb));
   /* background: var(--bg-color); */
 }
 

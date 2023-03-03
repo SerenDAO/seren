@@ -1,28 +1,29 @@
 .logBox {
-  position: relative;
-  display: flex;
+  position       : fixed;
+  display        : flex;
   justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  top: 15vh;
+  align-items    : stretch;
+  flex-direction : row;
+  bottom         : 5vh;
+  left           : 0;
+  width          : 100%;
 }
 
 .logButton {
   background-color: #FACC15;
-  color: #F43F5E;
-  font-style: bold;
-  font-size: 1.3em;
-  align-items: center;
-  width: 70vw;
-  height: 5vh;
-  border: none;
-  border-radius: 18px;
-  bottom: 0;
+  color           : #F43F5E;
+  font-size       : 25px;
+  align-items     : center;
+  width           : 70vw;
+  height          : 2em;
+  border          : none;
+  border-radius   : 18px;
+  bottom          : 0;
 }
 
 .userKey {
-  display: flex;
-  flex-direction: column;
+  display        : flex;
+  flex-direction : column;
   justify-content: center;
-  align-items: center;
+  align-items    : center;
 }

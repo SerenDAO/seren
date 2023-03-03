@@ -5,6 +5,7 @@ import { generateKeyPair } from 'crypto'
 import { TransferSuiTransaction } from '@mysten/sui.js/dist/signers/txn-data-serializers/txn-data-serializer'
 import { provider, signer1, suiObjectId1, packageObjectId } from '../constants/constants'
 import CreateSuiAddressProps from '../type/CreateSuiAddressProps'
+import { Kalam } from '@next/font/google'
 import styles from './styles/Login.module.css'
 
 const CreateSuiAddress = ({ component, setComponent, keypair, setKeypair, publicKey, setPublicKey, secretKey, setSecretKey, rawSigner, setRawSigner, address, setAddress, suiBalance, setSuiBalance }: CreateSuiAddressProps) => {
@@ -28,6 +29,8 @@ const CreateSuiAddress = ({ component, setComponent, keypair, setKeypair, public
     setPublicKey(publicKey)
 
     const secretKey: string = keypair.export().privateKey
+    const schema: string = keypair.export().schema
+
     setSecretKey(secretKey)
 
     const rawSigner: RawSigner = new RawSigner(keypair, provider)
@@ -35,7 +38,7 @@ const CreateSuiAddress = ({ component, setComponent, keypair, setKeypair, public
 
     const address: string = await rawSigner.getAddress()
     setAddress(address)
-    console.log(address);
+    console.log('get address from rawSinger', address)
 
     const txn: TransferSuiTransaction = {
       amount: sui_to_mist(0.0001),
@@ -53,18 +56,29 @@ const CreateSuiAddress = ({ component, setComponent, keypair, setKeypair, public
 
     setDisplayKeys(true)
 
+    saveKeys(publicKey, secretKey, address)
+
     // const response: any = await provider.requestSuiFromFaucet(address, header);
     // console.log(response);
   }
 
   async function login() {
     await generate_and_fund_keypair()
+
     setComponent("AvatarUpload")
+  }
+
+  async function saveKeys(publicKey: string, privateKey: string, address: string) {
+    // save keys to localstorage
+    localStorage.setItem("publicKey", publicKey)
+    console.log('save private key', privateKey)
+    localStorage.setItem("privateKey", privateKey)
+    localStorage.setItem("address", address)
   }
 
   return (
     <div className={styles.logBox}>
-      <button onClick={login} disabled={displayKeys} className={styles.logButton}>Login</button>
+      <button onClick={login} disabled={displayKeys} className={styles.logButton + ' btn'}>Login</button>
       {displayKeys && (
         <div className={styles.userKey}>
           {/* <h3>Account creation successful, please take notes of the following information:</h3> */}

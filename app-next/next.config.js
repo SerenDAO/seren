@@ -7,9 +7,27 @@ const nextConfig = {
         protocol: 'https',
         hostname: '*.io',
       },
+      {
+        protocol: 'https',
+        hostname: '*.io',
+      },
     ],
     // domains: ['infura.com', 'ipfs.io', 'ipfs.infura.io', 'ipfs.infura.io'],
   },
+
+  // async headers() {
+  //   return [
+  //     {
+  //       source: "/font/Kalam/Kalam-Regular.woff",
+  //       headers: [
+  //         {
+  //           key: "Cache-Control",
+  //           value: "public, max-age=31536000, immutable",
+  //         },
+  //       ],
+  //     },
+  //   ]
+  // },
 
   async rewrites() {
     return {

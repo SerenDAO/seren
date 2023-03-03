@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import { Inter } from '@next/font/google'
 import { Ed25519Keypair, Secp256k1Keypair, JsonRpcProvider, RawSigner, TypeTag, Network } from '@mysten/sui.js'
 import { fromExportedKeypair, MoveEvent, ExportedKeypair } from "@mysten/sui.js"
 import { useState, useEffect } from 'react'
@@ -12,28 +11,55 @@ import UserHome from '../components/UserHome'
 // import "bootstrap/dist/css/bootstrap.min.css";
 import styles from '@/styles/Home.module.css'
 import serenLogo from '../public/circle.png'
+import { provider } from '@/constants/constants'
+import { fromB64 } from '@mysten/bcs'
 
 export default function Home() {
+
+  const [publicKey, setPublicKey] = useState<string>("")
+  const [secretKey, setSecretKey] = useState<string>("")
+
   const [component, setComponent] = useState<string>("CreateAccount")
 
   const [keypair, setKeypair] = useState<Ed25519Keypair>()
-  const [publicKey, setPublicKey] = useState<string>()
-  const [secretKey, setSecretKey] = useState<string>()
   const [rawSigner, setRawSigner] = useState<RawSigner>()
   const [address, setAddress] = useState<string>()
   const [suiBalance, setSuiBalance] = useState<number>()
   const [loginInfo, setLoginInfo] = useState<string>()
 
-  return (
 
+  // get keys and loginInfo from localstorage when this component mounts
+  useEffect(() => {
+    if (!window.localStorage) return
+    const publicKeyFromStorage = window.localStorage.getItem("publicKey")
+    const privateKeyFromStorage = window.localStorage.getItem("privateKey")
+    if (publicKeyFromStorage && privateKeyFromStorage) {
+      setPublicKey(publicKeyFromStorage)
+      setSecretKey(privateKeyFromStorage)
+      setComponent("AvatarUpload")
+
+      const keypair = Ed25519Keypair.fromSecretKey(fromB64(privateKeyFromStorage))
+      setRawSigner(new RawSigner(keypair, provider))
+    }
+
+    const loginInfoStorage = window.localStorage.getItem("loginInfo")
+    if (loginInfoStorage) {
+      setLoginInfo(loginInfoStorage)
+      setComponent("UserHome")
+    }
+  }, [])
+
+  return <>
     <div className={styles.indexPage}>
 
-      <Image
-        src={serenLogo}
-        alt='seren-logo'
-        width={363}
-        height={363}
-      />
+      {component === "CreateAccount" &&
+        <Image
+          src={serenLogo}
+          alt='seren-logo'
+          width={363}
+          height={363}
+        />
+      }
 
       <div className={styles.logInButton}>
         {component === "CreateAccount" &&
@@ -53,7 +79,6 @@ export default function Home() {
             suiBalance={suiBalance}
             setSuiBalance={setSuiBalance}
           />
-
         }
       </div>
       {component === "AvatarUpload" && <AvatarUpload component={component} setComponent={setComponent} rawSigner={rawSigner} loginInfo={loginInfo} setLoginInfo={setLoginInfo} />}
@@ -62,7 +87,7 @@ export default function Home() {
 
     </div>
 
-  )
+  </>
 }
 
 

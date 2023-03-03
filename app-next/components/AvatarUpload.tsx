@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Image from 'next/image'
 import UploadService from "../services/AvatarUploadService"
 import FileInfo from "@/type/FileInfo"
@@ -7,23 +7,34 @@ import { Ed25519Keypair, Secp256k1Keypair, JsonRpcProvider, RawSigner, TypeTag, 
 import { packageObjectId } from "../constants/constants"
 import { getExecutionStatus, getTransactionDigest, getCreatedObjects } from "@mysten/sui.js"
 import { provider } from "../constants/constants"
-import assert from "assert"
 import Avatar from "./Avatar"
+import style from './styles/AvatarUpload.module.css'
 
 const AvatarUpload = ({ component, setComponent, rawSigner, loginInfo, setLoginInfo }: AvatarUploadProps) => {
   const [currentFile, setCurrentFile] = useState<File>()
   const [progress, setProgress] = useState<number>(0)
   const [message, setMessage] = useState<string>("")
   const [fileInfos, setFileInfos] = useState<FileInfo>()
+  const [name, setName] = useState<string>("")
+
+  // get avatarUrl and name from localstorage when this component mounts
+  useEffect(() => {
+    if (!window.localStorage) return
+    const avatarUrlFromStorage = window.localStorage.getItem("avatarUrl")
+    const nameFromStorage = window.localStorage.getItem("name")
+    if (avatarUrlFromStorage && nameFromStorage) {
+      setComponent("UserHome")
+    }
+  }, [])
+
 
   const selectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target
     const selectedFiles = files as FileList
     setCurrentFile(selectedFiles?.[0])
-    setProgress(0)
   }
 
-  const upload = () => {
+  const upload = useCallback(() => {
     setProgress(0)
     if (!currentFile) return
 
@@ -44,15 +55,20 @@ const AvatarUpload = ({ component, setComponent, rawSigner, loginInfo, setLoginI
 
         setCurrentFile(undefined)
       })
+  }, [currentFile])
+
+  useEffect(() => {
+    if (!currentFile) return
+    upload()
+  }, [currentFile, upload])
+
+  const save = async () => {
+    // save to browser localstorage
+    const avatarUrl = "https://seren.infura-ipfs.io/ipfs/" + fileInfos?.Hash
+    localStorage.setItem("avatarUrl", avatarUrl)
+    localStorage.setItem("name", name)
+    await create_login_info(rawSigner!, avatarUrl)
   }
-
-  useEffect(() => {
-    console.log(fileInfos)
-  }, [fileInfos])
-
-  useEffect(() => {
-    console.log(loginInfo)
-  }, [loginInfo])
 
   const create_login_info = async (signer: RawSigner, avatarUrl: string) => {
     const moveCallTxn = await signer.executeMoveCall({
@@ -76,52 +92,61 @@ const AvatarUpload = ({ component, setComponent, rawSigner, loginInfo, setLoginI
 
       const createdObjects = getCreatedObjects(moveCallTxn)
       if (createdObjects !== undefined) {
-        assert(createdObjects.length === 1, 'length of created "LoginInfo" objects has to be one')
+        if (createdObjects.length !== 1) {
+          alert('length of created "LoginInfo" objects has to be one')
+          return
+        }
         const loginInfo = createdObjects[0].reference.objectId
         setLoginInfo(loginInfo)
+        localStorage.setItem("loginInfo", loginInfo)
       }
       setComponent("UserHome")
     }
 
   }
 
+  const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value)
+  }
 
 
   return (
     <div>
-      <h3>Choose Your Avatar</h3>
       <div className="row">
-        <div className="col-8">
-          <label className="btn btn-default p-0">
+        <div className="col-8" style={{ textAlign: "center" }}>
+          <div className={style.fileInput + " btn btn-default p-0"}>
+            <span>Choose Your Avatar</span>
             <input type="file" onChange={selectFile} />
-          </label>
+
+            {
+              fileInfos && fileInfos?.Hash &&
+              <Avatar
+                className={style.avatar}
+                url={"https://seren.infura-ipfs.io/ipfs/" + fileInfos.Hash}
+              />
+            }
+          </div>
         </div>
+        {currentFile && progress < 100 && (
+          <div className="progress my-3">
+            <div
+              className="progress-bar progress-bar-info"
+              role="progressbar"
+              aria-valuenow={progress}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              style={{ width: "100%", textAlign: "center" }}
+            >
+              {progress}%
+            </div>
+          </div>
+        )}
 
         <div className="col-4">
-          <button
-            className="btn btn-success btn-sm"
-            disabled={!currentFile}
-            onClick={upload}
-          >
-            Upload
-          </button>
+          <input className={style.name} type="text" onChange={onNameChange} placeholder='Name' />
         </div>
       </div>
 
-      {currentFile && (
-        <div className="progress my-3">
-          <div
-            className="progress-bar progress-bar-info"
-            role="progressbar"
-            aria-valuenow={progress}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            style={{ width: progress + "%" }}
-          >
-            {progress}%
-          </div>
-        </div>
-      )}
 
       {message && (
         <div className="alert alert-secondary mt-3" role="alert">
@@ -129,26 +154,19 @@ const AvatarUpload = ({ component, setComponent, rawSigner, loginInfo, setLoginI
         </div>
       )}
 
-      {fileInfos &&
+      {fileInfos && currentFile && progress >= 100 && name &&
         <>
-          {// eslint-disable-next-line @next/next/no-img-element
-            <Avatar
-              url={"https://seren.infura-ipfs.io/ipfs/" + fileInfos.Hash}
-            />
-          }
-          <ul className="list-group list-group-flush">
-            <p>File name: {fileInfos.Name}</p>
-            <p>File hash on IPFS: {fileInfos.Hash}</p>
-            <p>File size: {fileInfos.Size}</p>
-          </ul>
           {/* "rawSigner" has to exist here, because to reach this line, 
         "components" has to be set to "AvatarUpload" on the "CreateSuiAddress" page, 
-        which means "displayKeys" is set to true, and "rawSigner" must have been created */}
-          <button onClick={() => create_login_info(rawSigner!, "https://seren.infura-ipfs.io/ipfs/" + fileInfos.Hash)}>Create Account using Avatar</button>
+        which means "displayKeys" is set to true, and "rawSigner" must have been created */
+            // Create Account using Avatar
+          }
+          <button className={style.save + ' btn'}
+            onClick={save}>SAVE</button>
         </>
       }
 
-    </div>
+    </div >
   )
 }
 
