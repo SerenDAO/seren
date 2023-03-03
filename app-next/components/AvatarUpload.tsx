@@ -25,7 +25,7 @@ const AvatarUpload = ({ component, setComponent, rawSigner, loginInfo, setLoginI
     if (avatarUrlFromStorage && nameFromStorage) {
       setComponent("UserHome")
     }
-  }, [])
+  }, [setComponent])
 
 
   const selectFile = (event: React.ChangeEvent<HTMLInputElement>) => {

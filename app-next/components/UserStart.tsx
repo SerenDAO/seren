@@ -88,7 +88,7 @@ const UserStart = ({ loginInfo, address, avatarUrl }: UserStartProps) => {
                     session_timestamp: data.timestamp
                 })
             }
-        );
+        )
     }
 
     const set_session_image_url = () => {
@@ -103,13 +103,13 @@ const UserStart = ({ loginInfo, address, avatarUrl }: UserStartProps) => {
     }
 
     const address_added_already = (sessionParticipantAddress: string): boolean => {
-        if(sessionParticipantAddress === sessionInfo.session_starter_address) return true;
-        for(let i = 0; i < sessionInfo.session_participant_addresses.length; i++) {
-            if(sessionInfo.session_participant_addresses[i] === sessionParticipantAddress) {
-                return true;
+        if (sessionParticipantAddress === sessionInfo.session_starter_address) return true
+        for (let i = 0; i < sessionInfo.session_participant_addresses.length; i++) {
+            if (sessionInfo.session_participant_addresses[i] === sessionParticipantAddress) {
+                return true
             }
         }
-        return false;
+        return false
     }
 
     const add_session_participant_address = async (sessionParticipantAddress: string) => {
@@ -117,9 +117,9 @@ const UserStart = ({ loginInfo, address, avatarUrl }: UserStartProps) => {
             const getBalanceTxn = await provider.getBalance(sessionParticipantAddress, "0x2::sui::SUI")
             const suiBalance = mist_to_sui(getBalanceTxn.totalBalance)
             console.log(getBalanceTxn)
-            if(suiBalance < 0.00001) {
-                alert("Participant does not have enough SUI (>=0.00001) to join the session and mint NFT!");
-            } else if(address_added_already(sessionParticipantAddress)) {
+            if (suiBalance < 0.00001) {
+                alert("Participant does not have enough SUI (>=0.00001) to join the session and mint NFT!")
+            } else if (address_added_already(sessionParticipantAddress)) {
                 alert("Address added already!")
             } else {
                 setSessionInfo({
@@ -127,8 +127,8 @@ const UserStart = ({ loginInfo, address, avatarUrl }: UserStartProps) => {
                     session_participant_addresses: [...sessionInfo.session_participant_addresses, sessionParticipantAddress]
                 })
             }
-        } catch(error) {
-            console.log(error);
+        } catch (error) {
+            console.log(error)
             alert("Not valid address!")
         }
     }
@@ -141,7 +141,7 @@ const UserStart = ({ loginInfo, address, avatarUrl }: UserStartProps) => {
     }
 
     const render_session_info = () => {
-        return(
+        return (
             <>
                 <p>{"ID: " + sessionInfo.session_id}</p>
                 <p>{"Description: " + sessionInfo.session_description}</p>
@@ -152,16 +152,16 @@ const UserStart = ({ loginInfo, address, avatarUrl }: UserStartProps) => {
                 <p>{"Longitude: " + sessionInfo.session_location_longitude}</p>
                 <p>{"Timestamp: " + new Date(sessionInfo.session_timestamp).toLocaleString()}</p>
                 <button onClick={() => set_session_location_and_timestamp()}>Refresh Location and Timestamp</button>
-                <br/><br/>
+                <br /><br />
                 {sessionInfo.session_participant_addresses.map((address, index) => {
-                    return(
-                        <span>
+                    return (
+                        <span key={index}>
                             <p>{"Participant address " + (index + 1) + ": " + address}</p>
                             <button onClick={() => remove_session_particpant_address(address)}>Remove Participant</button>
                         </span>
                     )
                 })}
-                <br/>
+                <br />
             </>
         )
     }
@@ -174,7 +174,8 @@ const UserStart = ({ loginInfo, address, avatarUrl }: UserStartProps) => {
     //     }
     // }, [])
 
-    useEffect(() => {set_session_location_and_timestamp()}, [sessionInfo.session_description]) // can't be put directly below "set_session_description" due to how useState refreshes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(() => { set_session_location_and_timestamp() }, [sessionInfo.session_description]) // can't be put directly below "set_session_description" due to how useState refreshes
 
     return (
         <div>
@@ -195,14 +196,14 @@ const UserStart = ({ loginInfo, address, avatarUrl }: UserStartProps) => {
                     <input ref={sessionNewParticipantAddressRef} placeholder="add participant"></input>
                     <button onClick={() => {
                         if (sessionNewParticipantAddressRef.current !== null) {
-                            add_session_participant_address(sessionNewParticipantAddressRef.current.value);
+                            add_session_participant_address(sessionNewParticipantAddressRef.current.value)
                         }
                     }}>
                         Add Participant
                     </button>
 
                 </div>
-            
+
                 // sessionInfo.session_participant_addresses.map((address, index) => (
                 //     <div key={index}>
                 //         <div>{address}</div>
