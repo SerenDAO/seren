@@ -35,6 +35,7 @@ const CreateSuiAddress = ({ component, setComponent, keypair, setKeypair, public
 
     const address: string = await rawSigner.getAddress()
     setAddress(address)
+    console.log(address);
 
     const txn: TransferSuiTransaction = {
       amount: sui_to_mist(0.0001),

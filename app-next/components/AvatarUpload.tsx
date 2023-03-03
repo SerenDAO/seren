@@ -1,19 +1,20 @@
 import { useState, useEffect } from "react"
 import Image from 'next/image'
 import UploadService from "../services/AvatarUploadService"
-import Avatar from "../type/Avatar"
+import FileInfo from "@/type/FileInfo"
 import AvatarUploadProps from "../type/AvatarUploadProps"
 import { Ed25519Keypair, Secp256k1Keypair, JsonRpcProvider, RawSigner, TypeTag, Network, getTransactionAuthorityQuorumSignInfo } from '@mysten/sui.js'
 import { packageObjectId } from "../constants/constants"
 import { getExecutionStatus, getTransactionDigest, getCreatedObjects } from "@mysten/sui.js"
 import { provider } from "../constants/constants"
 import assert from "assert"
+import Avatar from "./Avatar"
 
 const AvatarUpload = ({ component, setComponent, rawSigner, loginInfo, setLoginInfo }: AvatarUploadProps) => {
   const [currentFile, setCurrentFile] = useState<File>()
   const [progress, setProgress] = useState<number>(0)
   const [message, setMessage] = useState<string>("")
-  const [fileInfos, setFileInfos] = useState<Avatar>()
+  const [fileInfos, setFileInfos] = useState<FileInfo>()
 
   const selectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target
@@ -131,9 +132,9 @@ const AvatarUpload = ({ component, setComponent, rawSigner, loginInfo, setLoginI
       {fileInfos &&
         <>
           {// eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={"https://seren.infura-ipfs.io/ipfs/" + fileInfos.Hash}
-              alt="uploaded avatar" />
+            <Avatar
+              url={"https://seren.infura-ipfs.io/ipfs/" + fileInfos.Hash}
+            />
           }
           <ul className="list-group list-group-flush">
             <p>File name: {fileInfos.Name}</p>

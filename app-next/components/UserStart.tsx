@@ -17,7 +17,8 @@ import { getObjectFields } from '@mysten/sui.js'
 
 const UserStart = ({ loginInfo, address, avatarUrl }: UserStartProps) => {
 
-    const inputRef = useRef<HTMLInputElement>(null)
+    const sessionDescriptionRef = useRef<HTMLInputElement>(null)
+    const sessionNewParticipantAddressRef = useRef<HTMLInputElement>(null)
 
     const [sessionInfo, setSessionInfo] = useState<{
         session_id: number,
@@ -30,16 +31,18 @@ const UserStart = ({ loginInfo, address, avatarUrl }: UserStartProps) => {
         session_location_longitude: number,
         session_timestamp: number
     }>({
-        session_id: 0,
+        session_id: 1, // default to 1 for now; will obtain from backend later
         session_description: "",
-        session_type: "",
+        session_type: "link", // default to link event for now; more event types to be added later
         session_image_url: "",
-        session_starter_address: "",
-        session_participant_addresses: [address!],
+        session_starter_address: address!,
+        session_participant_addresses: [],
         session_location_latitude: 0,
         session_location_longitude: 0,
         session_timestamp: 0
     })
+
+    const mist_to_sui = (mist: number): number => mist / 1_000_000_000
 
     const mint = async (signer: any) => {
         const {
@@ -75,6 +78,23 @@ const UserStart = ({ loginInfo, address, avatarUrl }: UserStartProps) => {
         console.log(moveCallTxn)
     }
 
+    const set_session_location_and_timestamp = () => {
+        navigator.geolocation.getCurrentPosition(
+            (data) => {
+                setSessionInfo({
+                    ...sessionInfo,
+                    session_location_latitude: data.coords.latitude,
+                    session_location_longitude: data.coords.longitude,
+                    session_timestamp: data.timestamp
+                })
+            }
+        );
+    }
+
+    const set_session_image_url = () => {
+
+    }
+
     const set_session_description = (sessionDescription: string) => {
         setSessionInfo({
             ...sessionInfo,
@@ -82,12 +102,71 @@ const UserStart = ({ loginInfo, address, avatarUrl }: UserStartProps) => {
         })
     }
 
-    const add_session_participant_address = (sessionParticipantAddress: string) => {
+    const address_added_already = (sessionParticipantAddress: string): boolean => {
+        if(sessionParticipantAddress === sessionInfo.session_starter_address) return true;
+        for(let i = 0; i < sessionInfo.session_participant_addresses.length; i++) {
+            if(sessionInfo.session_participant_addresses[i] === sessionParticipantAddress) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    const add_session_participant_address = async (sessionParticipantAddress: string) => {
+        try {
+            const getBalanceTxn = await provider.getBalance(sessionParticipantAddress, "0x2::sui::SUI")
+            const suiBalance = mist_to_sui(getBalanceTxn.totalBalance)
+            console.log(getBalanceTxn)
+            if(suiBalance < 0.00001) {
+                alert("Participant does not have enough SUI (>=0.00001) to join the session and mint NFT!");
+            } else if(address_added_already(sessionParticipantAddress)) {
+                alert("Address added already!")
+            } else {
+                setSessionInfo({
+                    ...sessionInfo,
+                    session_participant_addresses: [...sessionInfo.session_participant_addresses, sessionParticipantAddress]
+                })
+            }
+        } catch(error) {
+            console.log(error);
+            alert("Not valid address!")
+        }
+    }
+
+    const remove_session_particpant_address = (sessionParticipantAddress: string) => {
         setSessionInfo({
             ...sessionInfo,
-            session_participant_addresses: [...sessionInfo.session_participant_addresses, sessionParticipantAddress]
+            session_participant_addresses: sessionInfo.session_participant_addresses.filter((address) => address !== sessionParticipantAddress)
         })
     }
+
+    const render_session_info = () => {
+        return(
+            <>
+                <p>{"ID: " + sessionInfo.session_id}</p>
+                <p>{"Description: " + sessionInfo.session_description}</p>
+                <p>{"Type: " + sessionInfo.session_type}</p>
+                <p>{"Image URL: " + sessionInfo.session_image_url}</p>
+                <p>{"Starter address: " + sessionInfo.session_starter_address}</p>
+                <p>{"Latitude: " + sessionInfo.session_location_latitude}</p>
+                <p>{"Longitude: " + sessionInfo.session_location_longitude}</p>
+                <p>{"Timestamp: " + new Date(sessionInfo.session_timestamp).toLocaleString()}</p>
+                <button onClick={() => set_session_location_and_timestamp()}>Refresh Location and Timestamp</button>
+                <br/><br/>
+                {sessionInfo.session_participant_addresses.map((address, index) => {
+                    return(
+                        <span>
+                            <p>{"Participant address " + (index + 1) + ": " + address}</p>
+                            <button onClick={() => remove_session_particpant_address(address)}>Remove Participant</button>
+                        </span>
+                    )
+                })}
+                <br/>
+            </>
+        )
+    }
+
+
 
     // useEffect(() => {
     //     if(address) {
@@ -95,30 +174,45 @@ const UserStart = ({ loginInfo, address, avatarUrl }: UserStartProps) => {
     //     }
     // }, [])
 
+    useEffect(() => {set_session_location_and_timestamp()}, [sessionInfo.session_description]) // can't be put directly below "set_session_description" due to how useState refreshes
+
     return (
         <div>
             {sessionInfo.session_description === "" ? (
                 <div>
-                    <input ref={inputRef}></input>
+                    <input ref={sessionDescriptionRef} placeholder="input event description"></input>
                     <button onClick={() => {
-                        if (inputRef.current !== null) {
-                            set_session_description(inputRef.current.value)
-                        }
+                        if (sessionDescriptionRef.current !== null) {
+                            set_session_description(sessionDescriptionRef.current.value)
+                        };
                     }}>
                         Start Event
                     </button>
                 </div>
             ) : (
-                sessionInfo.session_participant_addresses.map((address, index) => (
-                    <div key={index}>
-                        <div>{address}</div>
-                        <Image
-                            src={avatarUrl} // this is just user's own avatar, need to generalize to getting everyone's avatar using their address
-                            alt="image"
-                        />
-                    </div>
-                )
-                )
+                <div>
+                    {render_session_info()}
+                    <input ref={sessionNewParticipantAddressRef} placeholder="add participant"></input>
+                    <button onClick={() => {
+                        if (sessionNewParticipantAddressRef.current !== null) {
+                            add_session_participant_address(sessionNewParticipantAddressRef.current.value);
+                        }
+                    }}>
+                        Add Participant
+                    </button>
+
+                </div>
+            
+                // sessionInfo.session_participant_addresses.map((address, index) => (
+                //     <div key={index}>
+                //         <div>{address}</div>
+                //         <Image
+                //             src={avatarUrl} // this is just user's own avatar, need to generalize to getting everyone's avatar using their address
+                //             alt="image"
+                //         />
+                //     </div>
+                // )
+                // )
             )
             }
         </div>

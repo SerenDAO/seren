@@ -36,9 +36,9 @@ const UserHome = ({ loginInfo, setLoginInfo, address }: UserHomeProps) => {
     return (
         <div className="profile-page">
             <span>
-                <button>Profile</button>
-                <button>Collection</button>
-                <button>Start</button>
+                <button onClick={()=>setUserComponent("UserProfile")}>Profile</button>
+                <button onClick={()=>setUserComponent("UserCollection")}>Collection</button>
+                <button onClick={()=>setUserComponent("UserStart")}>Start</button>
             </span>
 
             {userComponent === "UserProfile" && <UserProfile loginInfo={loginInfo} />}

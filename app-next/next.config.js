@@ -5,7 +5,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '*.com',
+        hostname: '*.io',
       },
     ],
     // domains: ['infura.com', 'ipfs.io', 'ipfs.infura.io', 'ipfs.infura.io'],
