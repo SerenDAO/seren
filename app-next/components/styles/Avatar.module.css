@@ -1,0 +1,9 @@
+.avatar {
+  overflow     : hidden;
+  border-radius: 50%;
+}
+
+.avatarImage {
+  width : 100%;
+  height: auto;
+}
