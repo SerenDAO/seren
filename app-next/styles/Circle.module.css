@@ -1,0 +1,55 @@
+.circleEvent {
+  width           : 100%;
+  height          : 100vh;
+  background-color: var(--primary-color);
+  position        : relative;
+}
+
+
+.avatar,
+.avatarFriendPlus {
+  width : 38vw;
+  height: 38vw;
+}
+
+.avatar {
+  position: absolute;
+  border  : 4px solid #F59E0B;
+}
+
+.avatarMe {
+  bottom: 15vh;
+  left  : 31vw;
+}
+
+.avatarFriend,
+.avatarFriendPlus {
+  position: absolute;
+  left    : 31vw;
+  top     : 19vw;
+}
+
+.avatarFriend {
+  transform: rotateZ(180deg);
+}
+
+.avatarFriendPlus {
+  display         : flex;
+  justify-content : center;
+  align-items     : center;
+  border          : 4px solid #FCD34D;
+  border-radius   : 50%;
+  background-color: var(--primary-color);
+}
+
+.tunnel {
+  border       : 4px dashed #FCD34D;
+  border-top   : none;
+  border-bottom: none;
+  width        : 29vw;
+  height       : 50vh;
+  margin       : 0 auto;
+  position     : absolute;
+  bottom       : 29vh;
+  left         : 35.5vw;
+}
