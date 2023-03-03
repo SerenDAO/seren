@@ -1,7 +1,7 @@
 import {Ed25519Keypair, JsonRpcProvider, RawSigner, TypeTag} from '@mysten/sui.js';
 import {fromExportedKeypair,MoveEvent,ExportedKeypair} from "@mysten/sui.js";
 // import {ExportedKeypair} from "@mysten/sui.js/src/cryptography/keypair";
-import { packageObjectId } from './constants';
+import { packageObjectId } from '../app-next/constants/constants';
 // import { MoveEvent } from "@mysten/sui.js/src/types";
 // import { isMoveEvent } from "@mysten/sui.js/src/index"
 
