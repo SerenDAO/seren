@@ -178,6 +178,27 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
+"@liveblocks/client@1.0.1", "@liveblocks/client@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.npmmirror.com/@liveblocks/client/-/client-1.0.1.tgz#a5b40f5cb2653e43ccba8dd829fdfda5a17b865e"
+  integrity sha512-lU+A+v1bbvI6H/pOjo93G8LAf1HYM2yqZc4D/LCI6b/JiZT/3bMrJ2X8Or4Yc5DVmIK3T5Rumk2za9bSdcjBQQ==
+  dependencies:
+    "@liveblocks/core" "1.0.1"
+
+"@liveblocks/core@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.npmmirror.com/@liveblocks/core/-/core-1.0.1.tgz#8d595f2654aa0d7c9ce278b9b3bdbd7b71911182"
+  integrity sha512-IwtVtp1ogmVJLW7KSmkI7J+8+pPg0FMNdFV71oCPAugmlZRxUer3MvdIBOW4ULFBgoBJOzAmcjWRDFsl3K7ADA==
+
+"@liveblocks/react@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.npmmirror.com/@liveblocks/react/-/react-1.0.1.tgz#3ab1d6523704f4ac09cb09b88a3ee1ff5a067c85"
+  integrity sha512-gG3gC5ECfYf0RbJObSkXtRSzH++mSW0Dt2dDcDzkscYHqTWs79wToHC7Jjd3xAT7qQIYLUddBJ0RBYk8jy/o6Q==
+  dependencies:
+    "@liveblocks/client" "1.0.1"
+    "@liveblocks/core" "1.0.1"
+    use-sync-external-store "^1.2.0"
+
 "@mysten/bcs@0.5.0":
   version "0.5.0"
   resolved "https://registry.npmmirror.com/@mysten/bcs/-/bcs-0.5.0.tgz#d2570971e3d9121b83091ced38db13e907ab4198"
@@ -2790,6 +2811,11 @@ url-join@^4.0.1:
   version "4.0.1"
   resolved "https://registry.npmmirror.com/url-join/-/url-join-4.0.1.tgz#b642e21a2646808ffa178c4c5fda39844e12cde7"
   integrity sha512-jk1+QP6ZJqyOiuEI9AEWQfju/nB2Pw466kbA0LEZljHwKeMgd9WrAEgEGxjPDD2+TNbbb37rTyhEfrCXfuKXnA==
+
+use-sync-external-store@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.npmmirror.com/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz#7dbefd6ef3fe4e767a0cf5d7287aacfb5846928a"
+  integrity sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==
 
 utf-8-validate@^5.0.2:
   version "5.0.10"
