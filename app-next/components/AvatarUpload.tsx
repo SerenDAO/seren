@@ -73,6 +73,8 @@ const AvatarUpload = ({ component, setComponent, rawSigner, loginInfo, setLoginI
     const redirect = localStorage.getItem('redirect')
     if (redirect) {
       window.location.href = redirect
+      // clear redirect
+      localStorage.removeItem('redirect')
     }
   }
 
