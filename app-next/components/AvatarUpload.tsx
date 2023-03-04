@@ -68,6 +68,12 @@ const AvatarUpload = ({ component, setComponent, rawSigner, loginInfo, setLoginI
     localStorage.setItem("avatarUrl", avatarUrl)
     localStorage.setItem("name", name)
     await create_login_info(rawSigner!, avatarUrl)
+
+
+    const redirect = localStorage.getItem('redirect')
+    if (redirect) {
+      window.location.href = redirect
+    }
   }
 
   const create_login_info = async (signer: RawSigner, avatarUrl: string) => {
